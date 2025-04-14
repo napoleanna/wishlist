@@ -11,14 +11,14 @@ class CategoryTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white, // Полупрозрачный фон
+        color: Colors.white,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12), // Закругленные края
+              borderRadius: BorderRadius.circular(12),
               child: Image.asset(
                 category.imagePath,
                 fit: BoxFit.cover,

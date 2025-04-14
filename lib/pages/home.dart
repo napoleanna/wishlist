@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wishlist/pages/login_screen.dart';
-import 'package:wishlist/pages/search_screen.dart';
+import 'package:wishlist/pages/products_screen.dart';
 import 'package:wishlist/pages/notifications_screen.dart';
 import 'package:wishlist/pages/profile_screen.dart';
 import 'package:wishlist/pages/wishlist_screen.dart';
@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.add_circle), label: 'Desires'),
             BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notifications'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My profile'),
           ],

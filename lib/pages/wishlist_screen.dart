@@ -57,9 +57,9 @@ class WishListScreen extends StatelessWidget {
 
   Widget buildTabs() {
     return const TabBar(
-      indicatorColor: Colors.purpleAccent,
-      labelColor: Colors.deepPurpleAccent,
-      unselectedLabelColor: Colors.grey,
+        indicatorColor: Color(0xFFac829d),
+        labelColor: Color(0xFF8a4f75),
+        unselectedLabelColor: Color(0xFF3b2848),
       tabs: [
         Tab(text: 'Occasion'),
         Tab(text: 'All wishes'),
