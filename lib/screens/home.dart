@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wishlist/pages/login_screen.dart';
-import 'package:wishlist/pages/products_screen.dart';
-import 'package:wishlist/pages/notifications_screen.dart';
-import 'package:wishlist/pages/profile_screen.dart';
-import 'package:wishlist/pages/wishlist_screen.dart';
+import 'package:wishlist/screens/login_screen.dart';
+import 'package:wishlist/screens/products_screen.dart';
+import 'package:wishlist/screens/notifications_screen.dart';
+import 'package:wishlist/screens/profile_screen.dart';
+import 'package:wishlist/screens/wishlist_screen.dart';
 import 'package:wishlist/services/theme_service.dart';
 
 class HomePage extends StatefulWidget {

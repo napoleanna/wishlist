@@ -1,10 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../firebase_data/wish_list_data.dart';
-
-import '../widgets/wish_card.dart';
+import 'package:wishlist/widgets/wish_card.dart';
 import 'login_screen.dart';
+import 'package:wishlist/screens/wish_creation_screen.dart';
 
 
 class WishListScreen extends StatelessWidget {
@@ -24,14 +23,14 @@ class WishListScreen extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  WishListView(wishList: occasionWishes),
-                  WishListView(wishList: allWishes),
+                  WishListView(filterByOccasion: true),
+                  WishListView(filterByOccasion: false),
                 ],
               ),
             ),
           ],
         ),
-        floatingActionButton: buildFloatingActionButton(),
+        floatingActionButton: buildFloatingActionButton(context),
       ),
     );
   }
@@ -67,11 +66,16 @@ class WishListScreen extends StatelessWidget {
     );
   }
 
-  Widget buildFloatingActionButton() {
+  Widget buildFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
       backgroundColor: const Color(0xFFD8BFD8),
       shape: const CircleBorder(),
       onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => WishCreationScreen(initialProductName: ''))
+        );
       },
       child: const Icon(Icons.add, size: 40, color: Colors.white60),
     );
@@ -118,21 +122,52 @@ class ProfileHeader extends StatelessWidget {
 }
 
 class WishListView extends StatelessWidget {
-  final List<Map<String, String>> wishList;
-  const WishListView({super.key, required this.wishList});
+  final bool filterByOccasion;
+
+  const WishListView({super.key, required this.filterByOccasion});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return const Center(child: Text('User not logged in'));
+  }
+    return StreamBuilder<QuerySnapshot>(
+    stream: FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.uid).collection('wishes')
+      .orderBy('created_at', descending: true)
+      .snapshots(),
+    builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      final wishes = snapshot.data!.docs;
+
+      final filteredWishes = filterByOccasion
+      ? wishes.where((doc) => (doc['reason'] as String).isNotEmpty).toList()
+      : wishes;
+
+    if (filteredWishes.isEmpty) {
+      return const Center(child: Text('No wishes found'));
+  }
+
     return ListView.builder(
       padding: const EdgeInsets.all(15),
-      itemCount: wishList.length,
+      itemCount: filteredWishes.length,
       itemBuilder: (context, index) {
-        return WishCard(
-          title: wishList[index]['title']!,
-          date: wishList[index]['date']!,
-          wishesCount: wishList[index]['count']!,
-        );
+       var wish = filteredWishes[index];
+       return WishCard(
+         title: wish['name'] ?? 'No name',
+         reason: (wish['reason'] ?? '') as String,
+         link: (wish['link'] ?? '') as String,
+         notes: (wish['notes'] ?? '') as String,
+         date: (wish['created_at'] as Timestamp?)?.toDate().toLocal().toString().split(' ').first,
+       );
+
       },
+    );
+    },
     );
   }
 }

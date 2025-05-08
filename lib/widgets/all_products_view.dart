@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wishlist/pages/wish_creation_screen.dart';
+import 'package:wishlist/screens/wish_creation_screen.dart';
 import '../data/categories.dart';
 
 class AllProductsView extends StatefulWidget {

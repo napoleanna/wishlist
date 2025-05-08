@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wishlist/data/gift_reasons.dart';
 
@@ -23,23 +24,38 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
     _productNameController.text = widget.initialProductName;
   }
 
-  void _saveWish() {
-    if ( _productNameController.text.isEmpty) {
+  void _saveWish() async {
+    if (_productNameController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields')),
+        const SnackBar(content: Text('Please enter a product name')),
       );
       return;
     }
-
-    FirebaseFirestore.instance.collection('wishes').add({
-      'name': _productNameController.text,
-      'reason': _selectedReason,
-      'link': _productLinkController.text,
-      'notes': _notesController.text,
-      'created_at': Timestamp.now(),
-    });
-
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not logged in')),
+        );
+        return;
+      }
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('wishes')
+          .add({
+        'name': _productNameController.text,
+        'reason': _selectedReason ?? '',
+        'link': _productLinkController.text,
+        'notes': _notesController.text,
+        'created_at': Timestamp.now(),
+      });
     Navigator.pop(context);
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+    );
+    }
   }
   
 

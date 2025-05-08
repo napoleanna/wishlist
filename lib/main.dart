@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:wishlist/pages/home.dart';
+import 'package:wishlist/screens/home.dart';
 import 'package:wishlist/services/theme_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:wishlist/pages/login_screen.dart';
+import 'package:wishlist/screens/login_screen.dart';
 import 'app/themes/colors.dart';
 import 'firebase_data/auth_checker.dart';
 import 'firebase_options.dart';
