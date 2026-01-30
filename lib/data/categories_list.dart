@@ -1,0 +1,27 @@
+import '../models/category.dart';
+
+final List<Category> categories = [
+  Category(name: 'Beauty', imagePath: 'assets/category/beauty.webp'),
+  Category(name: 'Bags', imagePath: 'assets/category/bag.webp'),
+  Category(name: 'Electronics',
+      imagePath: 'assets/category/electronics.webp'),
+  Category(name: 'Games', imagePath: 'assets/category/games.webp'),
+  Category(name: 'Health', imagePath: 'assets/category/health.webp'),
+  Category(name: 'Toys for adults',
+      imagePath: 'assets/category/toys_for_adults.webp'),
+  Category(name: 'Jewelry', imagePath: 'assets/category/jewelry.webp'),
+  Category(name: 'Clothing', imagePath: 'assets/category/dress.webp'),
+  Category(name: 'Home appliances',
+      imagePath: 'assets/category/home_appliances.webp'),
+  Category(name: 'Children’s goods',
+      imagePath: 'assets/category/children_goods.webp'),
+  Category(name: 'Pets', imagePath: 'assets/category/pets.webp'),
+  Category(name: 'Books', imagePath: 'assets/category/books.webp'),
+  Category(name: 'Hobbies/creativity',
+      imagePath: 'assets/category/hobbies_creativity.webp'),
+  Category(name: 'Auto/motorcycles',
+      imagePath: 'assets/category/auto.webp'),
+  Category(name: 'Sports and recreation',
+      imagePath: 'assets/category/sports_recreation.webp'),
+  Category(name: 'Home', imagePath: 'assets/category/for_home.webp'),
+];

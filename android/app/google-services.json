@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "758793675164",
+    "project_id": "wishlist-cc299",
+    "storage_bucket": "wishlist-cc299.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:758793675164:android:65d49f5f1edcaa1d912859",
+        "android_client_info": {
+          "package_name": "com.napoleann.wishlist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMLDyNBcpwC56qqvSMXi9l0XYFqMEwBl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
