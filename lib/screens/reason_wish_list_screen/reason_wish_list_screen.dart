@@ -18,7 +18,7 @@ class ReasonWishListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _firestoreService = FirestoreService();
+    final firestoreService = FirestoreService();
 
     return Scaffold(
       appBar: AppBar(
@@ -26,7 +26,7 @@ class ReasonWishListScreen extends StatelessWidget {
         backgroundColor: const Color(0xFFC39AC5),
       ),
       body: StreamBuilder<List<Wish>>(
-        stream: _firestoreService.getWishesByListId(userId, listId),
+        stream: firestoreService.getWishesByListId(userId, listId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -45,7 +45,7 @@ class ReasonWishListScreen extends StatelessWidget {
               return WishCard(
                 wish: wish,
                 onEdit: () => _openEditWish(context, wish, userId),
-                onDelete: () => _firestoreService.deleteWish(userId, wish.id),
+                onDelete: () => firestoreService.deleteWish(userId, wish.id),
               );
             },
           );

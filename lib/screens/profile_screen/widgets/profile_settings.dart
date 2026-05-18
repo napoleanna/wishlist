@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wishlist/screens/profile_screen/widgets/setting_tile.dart';
 import 'package:wishlist/services/theme_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileSettings extends StatefulWidget {
   const ProfileSettings({super.key});
@@ -11,21 +13,54 @@ class ProfileSettings extends StatefulWidget {
 class _ProfileSettingsState extends State<ProfileSettings> {
   double notificationLevel = 1.0;
 
+  Future<void> _launchCoffeeUrl() async {
+    final Uri url = Uri.parse(
+        'https://www.instagram.com/napoleann_');
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          content: Text('Thank you for your support! ☕'),
+          duration: Duration(seconds: 2),
+      ),
+    );
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        throw Exception('Could not launch $url');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not open the link: $e')),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = const Color(0xFF6d66b1);
+    final headerColor = isDark ? Colors.white.withValues(alpha: 0.7)
+        : accentColor.withValues(alpha: 0.8);
+    final itemContentColor = Colors.black87;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.only(left: 8, bottom: 12),
+        Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 12),
           child: Text(
             'Settings',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color(0xFF392D75)),
+            style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: headerColor),
           ),
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.dark_mode_outlined,
           title: 'Dark Mode',
+          contentColor: itemContentColor,
           trailing: Switch(
             value: themeNotifier.value == ThemeMode.dark,
             onChanged: (value) {
@@ -33,31 +68,35 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             },
           ),
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.notifications_none_rounded,
           title: 'Notifications',
+          contentColor: itemContentColor,
           trailing: Switch(
             value: notificationLevel == 1.0,
             onChanged: (value) => setState(() => notificationLevel = value ? 1.0 : 0.0),
           ),
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.language_rounded,
           title: 'Language',
+          contentColor: itemContentColor,
           onTap: () {},
         ),
-        _buildSettingTile(
+        SettingTile(
             icon: Icons.security_outlined,
             title: 'Privacy and Security',
+          contentColor: itemContentColor,
             onTap: () {},
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.currency_exchange_rounded,
           title: 'Currency',
+          contentColor: itemContentColor,
           onTap: () { },
         ),
         const SizedBox(height: 20),
-        const Padding(
+         Padding(
             padding: EdgeInsets.only(
               left: 8,
               bottom: 12,
@@ -67,19 +106,19 @@ class _ProfileSettingsState extends State<ProfileSettings> {
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF392D75)),
+                  color: headerColor),
             ),
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.coffee_rounded,
           title: 'Buy author a coffee',
-          onTap: () {
-            // Здесь можно открыть ссылку на донат или внутреннюю покупку
-          },
+          contentColor: itemContentColor,
+          onTap: _launchCoffeeUrl,
         ),
-        _buildSettingTile(
+        SettingTile(
           icon: Icons.info_outline_rounded,
           title: 'About',
+          contentColor: itemContentColor,
           onTap: () => _showAbout(context),
         ),
         const SizedBox(height: 100)
@@ -87,29 +126,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     );
   }
 
-  Widget _buildSettingTile({
-    required IconData icon,
-    required String title,
-    Widget? trailing,
-    VoidCallback? onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(8), blurRadius: 10, offset: const Offset(0, 4)),
-        ],
-      ),
-      child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF6d66b1)),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-        trailing: trailing ?? const Icon(Icons.chevron_right, color: Colors.grey),
-        onTap: onTap,
-      ),
-    );
-  }
+
 
   void _showAbout(BuildContext context) {
     showAboutDialog(

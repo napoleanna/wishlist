@@ -42,6 +42,11 @@ class _ReasonTileState extends State<ReasonTile> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final textColor = isDark
+        ? Theme.of(context).colorScheme.primary
+        : const Color(0xFF6D17AA);
 
     return GestureDetector(
       onTapDown: _onTapDown,
@@ -54,8 +59,8 @@ class _ReasonTileState extends State<ReasonTile> with SingleTickerProviderStateM
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        elevation: 6,
-        shadowColor: Colors.black38,
+        elevation: isDark ? 2 : 6,
+        shadowColor: isDark ? Colors.black.withValues(alpha: 0.5) : Colors.black38,
         margin: const EdgeInsets.all(8),
         child: Stack(
           children: [
@@ -63,21 +68,32 @@ class _ReasonTileState extends State<ReasonTile> with SingleTickerProviderStateM
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Opacity(
-                 opacity: 0.5,
+                 opacity: isDark ? 0.4 : 0.6,
                  child: Image.asset(
                      widget.imagePath,
                      fit: BoxFit.cover,
-                   errorBuilder: (context, error, stackTrace) {
-                       return Container(
-                         decoration: BoxDecoration(
-                           borderRadius: BorderRadius.circular(20),
-                           color: Colors.grey[500],
-                         ),
-                       );
-                   }),
+                   errorBuilder: (context, error, stackTrace) => Container(
+                     color: isDark ? Colors.white10 : Colors.grey[300],
+                    ),
+                   ),
                   ),
                 ),
               ),
+        Positioned.fill(
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    isDark ? Colors.black54 : Colors.white24,
+                  ],
+              ),
+            ),
+          ),
+        ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -90,12 +106,12 @@ class _ReasonTileState extends State<ReasonTile> with SingleTickerProviderStateM
                style: GoogleFonts.playfairDisplay(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF6D17AA),
+                color: textColor,
                 shadows: [
-                  const Shadow(
-                   offset: Offset(0, 1),
+                  Shadow(
+                   offset: const Offset(0, 1),
                    blurRadius: 4,
-                   color: Colors.black54,
+                   color: isDark ? Colors.black : Colors.black26,
                   ),
                 ],
               ),

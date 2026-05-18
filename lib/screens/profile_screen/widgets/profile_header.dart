@@ -18,13 +18,16 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final accentColor = const Color(0xFF6d66b1);
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.9),
+        color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
+        boxShadow: isDark ? [] : [
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.2),
             blurRadius: 8,
@@ -42,15 +45,19 @@ class ProfileHeader extends StatelessWidget {
               const SizedBox( height: 12),
               Text(
                 nickname.isNotEmpty ? nickname: 'Your name',
-                style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.white : Colors.black87,
+                ),
               ),
               const SizedBox(height: 6),
               Text(
                 birthDate != null
                     ? 'Birth date: ${birthDate!.toLocal().toString().split(' ')[0]}'
                     : 'No date selected',
-                style: const TextStyle(fontSize: 14, color: Colors.grey),
+                style:  TextStyle(
+                    fontSize: 14,
+                    color: isDark ? Colors.white60 : Colors.grey),
               ),
             ],
           ),
@@ -59,7 +66,11 @@ class ProfileHeader extends StatelessWidget {
               right: 0,
               child: IconButton(
                   onPressed: onEdit,
-                  icon: const Icon(Icons.edit, color: Colors.deepPurple)))
+                  icon:  Icon(
+                      Icons.edit,
+                      color: isDark ? Colors.white70 : accentColor),
+              ),
+          )
         ],
       ),
     );

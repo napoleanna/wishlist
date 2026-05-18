@@ -23,7 +23,7 @@ class WishCreationScreen extends StatefulWidget {
   });
 
   @override
-  _WishCreationScreenState createState() => _WishCreationScreenState();
+  State<WishCreationScreen> createState() => _WishCreationScreenState();
 }
 
 class _WishCreationScreenState extends State<WishCreationScreen> {
@@ -137,6 +137,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
       if (mounted) Navigator.pop(context);
 
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error saving wish: $e')),
       );

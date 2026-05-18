@@ -28,9 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
       final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
       showModalBottomSheet(
         context: context,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
         builder: (_) => AddMenuBottomSheet(userId: userId),
       );
       return;

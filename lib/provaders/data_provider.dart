@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-class DataProvider extends ChangeNotifier{}
+class DataProvider extends ChangeNotifier {}

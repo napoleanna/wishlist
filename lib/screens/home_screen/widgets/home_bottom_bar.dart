@@ -14,21 +14,27 @@ class HomeBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return BottomAppBar(
-      elevation: 10,
-      color: Colors.white,
+      elevation: 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
       padding: EdgeInsets.zero,
       child: Container(
         height: 65,
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Theme.of(context).cardTheme.color : Colors.white,
           borderRadius: BorderRadius.circular(30),
-          boxShadow: [
+          border: isDark
+              ? Border.all(color: Colors.white.withValues(alpha: 0.1), width: 1)
+              : null,
+          boxShadow: isDark ? [] : [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               spreadRadius: 2,
+              offset: const Offset(0, -2),
             ),
           ],
         ),

@@ -6,6 +6,9 @@ import 'package:wishlist/services/profile_service.dart';
 import 'package:wishlist/screens/profile_screen/widgets/profile_form.dart';
 import 'package:wishlist/screens/profile_screen/widgets/profile_header.dart';
 
+import '../../services/image_service.dart';
+
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -16,6 +19,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final _service = ProfileService();
   final _nicknameController = TextEditingController();
+  final _imageService = ImageService();
 
   DateTime? _birthDate;
   String _selectedAvatar = 'assets/avatars/avatar_start.png';
@@ -52,6 +56,7 @@ Future<void> _loadProfile() async {
       _isProfileComplete = false;
     }
   } catch (e) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error loading profile: $e')));
   } finally {
@@ -89,13 +94,22 @@ Future<void> _saveProfile() async {
      await _service.saveProfile(profile);
      setState(() => _isProfileComplete = true);
    } catch (e) {
+     if (!mounted) return;
      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
          content: Text('Error saving profile: $e')));
    } finally {
-     if (Navigator.of(context).canPop()) Navigator.of(context).pop();
+     if (mounted && Navigator.of(context).canPop()) Navigator.of(context).pop();
    }
 
 }
+
+  Future<void> _handleImagePick() async {
+    final String? path = await _imageService.pickImageFromGallery();
+
+    if (path != null) {
+      setState(() => _selectedAvatar = path);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +123,8 @@ Future<void> _saveProfile() async {
 
     if (_isProfileComplete) {
       return Scaffold(
-        backgroundColor: const Color(0xFFF8F4FB),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: const Text('Profile'),
           backgroundColor: Colors.transparent,
@@ -139,7 +154,8 @@ Future<void> _saveProfile() async {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F4FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Create Profile'),
         backgroundColor: Colors.transparent,
@@ -151,7 +167,9 @@ Future<void> _saveProfile() async {
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(16),
         child: ProfileForm(
             nicknameController: _nicknameController,
@@ -169,9 +187,12 @@ Future<void> _saveProfile() async {
             onAvatarChanged: (path) => setState(() => _selectedAvatar = path),
             onSave: _saveProfile,
             isSaving: false,
+          onPickFromGallery: _handleImagePick,
         ),
+       ),
       ),
     );
+
   }
 
   @override

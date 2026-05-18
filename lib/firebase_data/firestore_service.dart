@@ -27,7 +27,7 @@ class FirestoreService {
         .collection('wishes')
         .snapshots()
         .map((snapshot) => snapshot.docs
-          .map((doc) => Wish.fromMap(doc.id, doc.data() as Map<String, dynamic>))
+          .map((doc) => Wish.fromMap(doc.id, doc.data()))
           .toList())
         .asBroadcastStream();
   }
@@ -40,7 +40,7 @@ class FirestoreService {
         .where('listId', isEqualTo: listId)
         .snapshots()
         .map((snapshot) => snapshot.docs
-          .map((doc) => Wish.fromMap(doc.id, doc.data() as Map<String, dynamic>))
+          .map((doc) => Wish.fromMap(doc.id, doc.data()))
           .toList());
   }
 
@@ -94,7 +94,7 @@ class FirestoreService {
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((d) =>
-            Wishlist.fromMap(d.id, d.data() as Map<String, dynamic>))
+            Wishlist.fromMap(d.id, d.data()))
             .toList())
         .asBroadcastStream();
   }

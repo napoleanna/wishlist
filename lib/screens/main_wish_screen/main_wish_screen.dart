@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:wishlist/app/theme/colors.dart';
 import 'package:wishlist/firebase_data/firestore_service.dart';
 import 'package:wishlist/models/wish.dart';
 import 'package:wishlist/models/wish_list.dart';
@@ -27,15 +27,11 @@ class _MainWishScreenState extends State<MainWishScreen> {
     _currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     if (_currentUserId.isNotEmpty) {
-      _allWishesStream = _firestoreService.getWishesByUser(_currentUserId);
-      _filteredWishlistsStream = Rx.combineLatest2(
-        _firestoreService.getWishesByUser(_currentUserId),
-        _firestoreService.getWishlistsByUser(_currentUserId), (wishes, wishlists) {
-          return List<Wishlist>.from(wishlists).where((list) {
-            return wishes.any((wish) => wish.reason == list.reason);
-          }).toList();
-        },
-      );
+
+      _allWishesStream = _firestoreService
+          .getWishesByUser(_currentUserId);
+      _filteredWishlistsStream = _firestoreService
+          .getWishlistsByUser(_currentUserId);
     }
   }
 
@@ -66,11 +62,62 @@ class _MainWishScreenState extends State<MainWishScreen> {
   }
 
   PreferredSizeWidget buildAppBar(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return AppBar(
-      backgroundColor: const Color(0xFFc39ac5),
-      title: const Text('My wishes'),
-      bottom: const TabBar(
-        tabs: [Tab(text: 'My wish lists'), Tab(text: 'All Wishes')],
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: false,
+
+      title: const Text('My wishes',
+        style: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w800,
+          letterSpacing: -0.5
+        ),
+      ),
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: isDark
+                ? [AppColors.darkAppBarGradientStart, AppColors.darkBg]
+                : [AppColors.lightAppBarGradientStart, AppColors.lightBg],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+      ),
+      bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16, vertical: 8),
+            child: TabBar(
+                isScrollable: true,
+                tabAlignment: TabAlignment.center,
+                dividerColor: Colors.transparent,
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: isDark
+                      ? AppColors.darkAccent
+                      : AppColors.lightDeep,
+                ),
+              labelColor: isDark ? Colors.black : Colors.white,
+              unselectedLabelColor: isDark
+                  ? AppColors.darkText
+                  : AppColors.lightDeep,
+              labelStyle: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14),
+              labelPadding: const EdgeInsets.symmetric(horizontal: 26),
+              tabs: const [
+              Tab(text: 'My wish lists'),
+              Tab(text: 'All Wishes'),
+              ],
+            ),
+          ),
       ),
     );
   }
