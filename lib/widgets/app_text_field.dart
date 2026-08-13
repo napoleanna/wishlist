@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 
 class AppTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final IconData icon;
   final bool obscureText;
+  final List<TextInputFormatter>? inputFormatters;
+
 
   const AppTextField({
     super.key,
@@ -12,6 +16,7 @@ class AppTextField extends StatelessWidget {
     required this.label,
     required this.icon,
     this.obscureText = false,
+    this.inputFormatters,
   });
 
   @override
@@ -19,6 +24,7 @@ class AppTextField extends StatelessWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      inputFormatters: inputFormatters,
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: Colors.deepPurpleAccent),

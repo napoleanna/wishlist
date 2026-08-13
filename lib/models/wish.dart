@@ -9,6 +9,7 @@ class Wish {
   final String? link;
   final String? notes;
   final DateTime? date;
+  final bool rememberDate;
 
   Wish({
     required this.id,
@@ -19,6 +20,7 @@ class Wish {
     this.link,
     this.notes,
     this.date,
+    this.rememberDate = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -30,6 +32,7 @@ class Wish {
       'link': link,
       'notes': notes,
       'date': date != null ? Timestamp.fromDate(date!) : null,
+      'rememberDate': rememberDate,
     };
   }
 
@@ -43,6 +46,7 @@ class Wish {
       link: map['link'],
       notes: map['notes'],
       date: map['date'] != null ? (map['date'] as Timestamp).toDate() : null,
+      rememberDate: map['rememberDate'] ?? false,
     );
   }
 
@@ -56,6 +60,8 @@ class Wish {
     String? link,
     String? notes,
     DateTime? date,
+    bool? rememberDate,
+    bool clearDate = false,
   }) {
     return Wish(
       id: id ?? this.id,
@@ -65,7 +71,8 @@ class Wish {
       reason: reason ?? this.reason,
       link: link ?? this.link,
       notes: notes ?? this.notes,
-      date: date ?? this.date,
+      date: clearDate ? null : (date ?? this.date),
+      rememberDate: rememberDate ?? this.rememberDate,
     );
   }
 

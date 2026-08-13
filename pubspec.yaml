@@ -5,21 +5,23 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.12.0
+  sdk: ^3.12.2
 
 dependencies:
   flutter:
     sdk: flutter
   provider: ^6.1.5+1
-  firebase_core: ^4.9.0
-  cloud_firestore: ^6.4.1
-  firebase_auth: ^6.5.1
+  firebase_core: ^4.13.0
+  cloud_firestore: ^6.8.0
+  firebase_auth: ^6.5.7
   url_launcher: ^6.3.2
-  intl: ^0.20.2
+  intl: ^0.20.3
   mask_text_input_formatter: ^2.9.0
-  google_fonts: ^8.1.0
-  image_picker: ^1.2.2
+  google_fonts: ^8.2.1
+  image_picker: ^1.2.3
   rxdart: ^0.28.0
+  firebase_storage: ^13.4.6
+  shared_preferences: ^2.5.5
 
 
   cupertino_icons: ^1.0.9

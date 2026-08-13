@@ -104,10 +104,34 @@ Future<void> _saveProfile() async {
 }
 
   Future<void> _handleImagePick() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+    
     final String? path = await _imageService.pickImageFromGallery();
-
+    
     if (path != null) {
-      setState(() => _selectedAvatar = path);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Uploading photo...')),
+        );
+      }
+      final String? downloadUrl = await _imageService.uploadImage(path, user.uid);
+      
+      if (downloadUrl != null) {
+        setState(() => _selectedAvatar = downloadUrl);
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Photo uploaded successfully!')),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to upload photo')),
+          );
+        }
+      }
     }
   }
 

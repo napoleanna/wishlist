@@ -62,7 +62,9 @@ class ProfileForm extends StatelessWidget {
               backgroundColor: accentColor.withValues(alpha: 0.1),
               backgroundImage: selectedAvatar.startsWith('assets')
                   ? AssetImage(selectedAvatar) as ImageProvider
-                  : FileImage(File(selectedAvatar)),
+                  : selectedAvatar.startsWith('http')
+                    ? NetworkImage(selectedAvatar)
+                    : FileImage(File(selectedAvatar)),
           ),
         ),
 

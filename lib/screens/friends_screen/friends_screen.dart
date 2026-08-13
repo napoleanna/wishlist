@@ -6,11 +6,13 @@ class FriendsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: false,
-        title: const Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
@@ -20,17 +22,18 @@ class FriendsScreen extends StatelessWidget {
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
-                      color: Color(0xFF1F1F2E)),
+                      color: isDark ? Colors.white : const Color(0xFF1F1F2E)),
                 ),
-                SizedBox(width: 8),
-                Icon(Icons.auto_awesome, color: Color(0xFF7B61FF), size: 24),
+                const SizedBox(width: 8),
+                const Icon(Icons.auto_awesome, color: Color(0xFF7B61FF), size: 24),
               ],
             ),
             Text('People who make gifting special ♡',
              style: TextStyle(
                fontFamily: 'Poppins',
                fontSize: 14,
-               color: Color(0xFF6B6B8A),
+               color: isDark ? Colors.white.withValues(alpha: 0.6)
+                   : const Color(0xFF6B6B8A),
                fontWeight: FontWeight.w400,
              ),
             ),

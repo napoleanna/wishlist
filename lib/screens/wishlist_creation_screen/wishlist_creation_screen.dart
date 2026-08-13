@@ -87,8 +87,15 @@ class _WishlistCreationScreenState extends State<WishlistCreationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(title: const Text('Create wish list')),
+      backgroundColor: isDarkMode ? const Color(0xFF130B2B) : const Color(0xFFE0DFFF),
+
+      appBar: AppBar(title: const Text('',
+          style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: WishlistFormBody(

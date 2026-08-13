@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 class ProfileHeader extends StatelessWidget {
   final String avatarPath;
@@ -41,7 +42,15 @@ class ProfileHeader extends StatelessWidget {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(radius: 50, backgroundImage: AssetImage(avatarPath)),
+              CircleAvatar(
+                  radius: 50,
+                  backgroundImage:
+                      avatarPath.startsWith('assets')
+                          ? AssetImage(avatarPath) as ImageProvider
+                          : avatarPath.startsWith('http')
+                            ? NetworkImage(avatarPath)
+                            : FileImage(File(avatarPath)),
+              ),
               const SizedBox( height: 12),
               Text(
                 nickname.isNotEmpty ? nickname: 'Your name',

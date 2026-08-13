@@ -62,9 +62,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
           title: 'Dark Mode',
           contentColor: itemContentColor,
           trailing: Switch(
-            value: themeNotifier.value == ThemeMode.dark,
-            onChanged: (value) {
-              setState(() => themeNotifier.value = value ? ThemeMode.dark : ThemeMode.light);
+            value: ThemeService.themeNotifier.value == ThemeMode.dark,
+            onChanged: (value)  async {
+              await ThemeService.toggleTheme(value);
+              setState(() {});
             },
           ),
         ),

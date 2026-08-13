@@ -26,16 +26,19 @@ class FriendRequestsList extends StatelessWidget {
 
        final previewRequests = allRequests.take(3).toList();
 
+       final isDark = Theme.of(context).brightness == Brightness.dark;
+
        return Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            const SizedBox(height: 15),
-           _buildHeader (allRequests.length),
+           _buildHeader (allRequests.length, isDark),
            const SizedBox(height: 15),
            Column(children: previewRequests.map((preview) {
              final requestId = preview.id;
              final data = preview.data() as Map<String, dynamic>;
-             return _buildRequestCard(context, data, requestId, currentUser.uid);
+             return _buildRequestCard(
+                 context, data, requestId, currentUser.uid, isDark);
            }).toList()),
            if (allRequests.length > 3)
              _buildViewAllButton(context, allRequests, currentUser.uid),
@@ -46,16 +49,16 @@ class FriendRequestsList extends StatelessWidget {
    );
   }
 
-  Widget _buildHeader(int count) {
+  Widget _buildHeader(int count, bool isDark) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text('Friend Requests',
+        Text('Friend Requests',
           style: TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF1F1F2E),
+            color: isDark ? Colors.white : const Color(0xFF1F1F2E),
           ),
         ),
         Container(
@@ -95,16 +98,16 @@ class FriendRequestsList extends StatelessWidget {
 
   Widget _buildRequestCard(
     BuildContext context, Map<String, dynamic> data,
-      String requestId, String myId) {
+      String requestId, String myId, bool isDark) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.6),
+            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.06),
             blurRadius: 15,
             offset: const Offset(0, 8),
           ),
@@ -112,22 +115,24 @@ class FriendRequestsList extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            backgroundColor: Color(0xFFF6F4FF),
-            child: Icon(Icons.person, color: Color(0xFF6d66b1)),
+          CircleAvatar(
+            backgroundColor: isDark ? Colors.white.withValues(alpha: 0.1)
+                : const Color(0xFFF6F4FF),
+            child: Icon(Icons.person, color: isDark ? Colors.white70
+                : const Color(0xFF6d66b1)),
           ),
           const SizedBox(width: 12),
           Expanded(
               child: Text(data['fromNickname'] ?? 'Unknown',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF1F1F2E),
+                    color: isDark ? Colors.white : const Color(0xFF1F1F2E),
                   )),
           ),
           _buildRequestAction(
             icon: Icons.check,
-            color: Colors.greenAccent,
+            color: Colors.green,
             onTap: () => _acceptRequest(myId, requestId, data['fromNickname']
                 ?? 'User'),
           ),
@@ -166,10 +171,12 @@ class FriendRequestsList extends StatelessWidget {
       BuildContext context,
       List<QueryDocumentSnapshot> requests,
       String myId) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFFF6F4FF),
+      backgroundColor: isDark ? const Color(0xFF403966) : const Color(0xFFF6F4FF),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
       builder: (context) => DraggableScrollableSheet(
@@ -177,15 +184,45 @@ class FriendRequestsList extends StatelessWidget {
         minChildSize: 0.5,
         maxChildSize: 0.95,
         expand: false,
-        builder: (context, scrollController) => ListView.builder(
-          controller: scrollController,
-          padding: const EdgeInsets.all(20),
-          itemCount: requests.length,
-          itemBuilder: (context, index) {
-            final data = requests[index].data() as Map<String, dynamic>;
-            final requestId = requests[index].id;
-            return _buildRequestCard(context, data, requestId, myId);
-          },
+        builder: (context, scrollController) => Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 10, top: 20, bottom: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                 children: [
+                   Text('All Requests',
+                   style: TextStyle(
+                     fontFamily: 'Poppins',
+                     fontSize: 20,
+                     fontWeight: FontWeight.bold,
+                     color: isDark ? Colors.white : const Color(0xFF1F1F2E),
+                    ),
+                   ),
+                   IconButton(
+                     onPressed: () => Navigator.pop(context),
+                     icon: Icon(Icons.close_rounded,
+                         color: isDark ? Colors.white70
+                             : const Color(0xFF6B6B8A),
+                     size: 26,
+                     ),
+                   ),
+                 ],
+              ),
+            ),
+          Expanded(
+            child: ListView.builder(
+              controller: scrollController,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              itemCount: requests.length,
+              itemBuilder: (context, index) {
+                final data = requests[index].data() as Map<String, dynamic>;
+                final requestId = requests[index].id;
+                return _buildRequestCard(context, data, requestId, myId, isDark);
+              },
+            ),
+          ),
+          ],
         ),
       ),
     );

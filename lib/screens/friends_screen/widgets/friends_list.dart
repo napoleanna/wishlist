@@ -60,11 +60,11 @@ class FriendsList extends StatelessWidget {
 
           const FriendRequestsList(),
 
-          const Text('Friends List', style: TextStyle(
+          Text('Friends List', style: TextStyle(
               fontFamily: 'Poppins',
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF1F1F2E),
+            color: isDark ? Colors.white : const Color(0xFF1F1F2E),
            ),
           ),
           const SizedBox(height: 15),
@@ -130,23 +130,26 @@ class FriendsList extends StatelessWidget {
     required VoidCallback onTap,
     required Color accentColor,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(24),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: accentColor.withValues(alpha: 0.15),
+          color: isDark ? accentColor.withValues(alpha: 0.15)
+              : accentColor.withValues(alpha: 0.08),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(
+          border: isDark ? Border.all(
               color: accentColor.withValues(alpha: 0.3),
-              width: 1.5
-          ),
+              width: 1.5 ) : null,
         ),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: Colors.white,
+              backgroundColor: isDark ? Colors.white.withValues(alpha: 0.12)
+                  : Colors.white,
               radius: 26,
               child: Icon(icon, color: const Color(0xFF7B61FF), size: 28),
             ),
@@ -155,21 +158,22 @@ class FriendsList extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(
+                  Text(title, style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
-                      color: Color(0xFF2D264B))),
-                  Text(subtitle, style: const TextStyle(
+                      color: isDark ? Colors.white : const Color(0xFF2D264B))),
+                  Text(subtitle, style: TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 13,
-                      color: Color(0xFF6B6B8A))),
+                      color: isDark ? Colors.white.withValues(alpha: 0.6)
+                          : const Color(0xFF6B6B8A))),
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios,
+            Icon(Icons.arrow_forward_ios,
                 size: 16,
-                color: Color(0xFF6B6B8A)),
+                color: isDark ? Colors.white70 : const Color(0xFF6B6B8A)),
           ],
         ),
       ),
@@ -204,15 +208,18 @@ class FriendsList extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Text(name, style: const TextStyle(
+                Text(name, style: TextStyle(
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Color(0xFF1F1F2E))),
+                  color: isDark ? Colors.white : const Color(0xFF1F1F2E),
+                )),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(
+                  Text(subtitle, style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 13, color: Color(0xFF6B6B8A))),
+                    fontSize: 13,
+                      color: isDark ? Colors.white.withValues(alpha: 0.6)
+                          : const Color(0xFF6B6B8A),)),
                 ],
               ),
           ),
