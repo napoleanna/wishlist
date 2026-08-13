@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/app/theme/colors.dart';
 import 'package:wishlist/screens/wish_creation_screen/wish_creation_screen.dart';
 import 'package:wishlist/screens/wishlist_creation_screen/wishlist_creation_screen.dart';

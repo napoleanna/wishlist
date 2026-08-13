@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/screens/friends_screen/widgets/friends_list.dart';
 
 class FriendsScreen extends StatelessWidget {

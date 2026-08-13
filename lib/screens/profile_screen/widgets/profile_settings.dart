@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/screens/profile_screen/widgets/setting_tile.dart';
 import 'package:wishlist/services/theme_service.dart';
 import 'package:url_launcher/url_launcher.dart';

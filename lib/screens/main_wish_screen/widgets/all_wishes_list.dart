@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/firebase_data/firestore_service.dart';
 import 'package:wishlist/models/wish.dart';
 import 'package:wishlist/screens/wish_creation_screen/wish_creation_screen.dart';

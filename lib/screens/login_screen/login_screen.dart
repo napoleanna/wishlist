@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/screens/home_screen/home_screen.dart';
 import 'package:wishlist/screens/register_screen/register_screen.dart';
 import 'package:wishlist/widgets/app_text_field.dart';

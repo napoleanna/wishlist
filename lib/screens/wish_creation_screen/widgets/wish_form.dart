@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:wishlist/data/gift_reasons.dart';
 import 'package:wishlist/screens/wish_creation_screen/widgets/wish_card_wrapper.dart';

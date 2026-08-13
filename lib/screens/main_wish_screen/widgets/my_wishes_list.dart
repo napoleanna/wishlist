@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/data/gift_reasons.dart';
 import 'package:wishlist/models/reason_tile.dart';
 import 'package:wishlist/models/wish_list.dart';

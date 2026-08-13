@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/screens/main_wish_screen/main_wish_screen.dart';
 import 'package:wishlist/screens/friends_screen/friends_screen.dart';
 import 'package:wishlist/screens/profile_screen/profile_screen.dart';

@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:wishlist/app/theme/theme.dart';
 import 'package:wishlist/screens/loading_screen/loading_screen.dart';
 import 'package:wishlist/screens/profile_screen/profile_screen.dart';

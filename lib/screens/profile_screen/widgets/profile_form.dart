@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 class ProfileForm extends StatelessWidget {
   final TextEditingController nicknameController;
