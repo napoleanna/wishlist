@@ -68,7 +68,7 @@ class _MyWishesListState extends State<MyWishesList>
     return EmptyStateWidget(
       title: 'No active wish lists.',
       icon: Icons.filter_list_off,
-      actionLabel: 'Add your first wish',
+      actionLabel: 'Create your first wish',
       onActionPressed: () => _openCreateWish(context, widget.currentUserId),
     );
   }

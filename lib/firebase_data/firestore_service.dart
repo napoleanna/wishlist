@@ -170,4 +170,60 @@ class FirestoreService {
     }
   }
 
+
+  Future<String> getOrCreateWishlistByReason(
+      String userId,
+      String reason,
+      ) async {
+        final existing = await _database
+            .collection('users')
+            .doc(userId)
+            .collection('wish_lists')
+            .where('reason', isEqualTo: reason)
+            .limit(1)
+            .get();
+
+        if (existing.docs.isNotEmpty) {
+          return existing.docs.first.id;
+        }
+
+        final docRef = _database
+            .collection('users')
+            .doc(userId)
+            .collection('wish_lists')
+            .doc();
+
+        final wishlist = Wishlist(
+            id: docRef.id,
+            userId: userId,
+            title: reason,
+            reason: reason,
+        );
+
+        await docRef.set(wishlist.toMap());
+
+        return docRef.id;
+  }
+
+  Future<String> createCustomWishlist({
+    required String userId,
+    required String title,
+  }) async {
+    final docRef = _database
+        .collection('users')
+        .doc(userId)
+        .collection('wish_lists')
+        .doc();
+
+    final wishlist = Wishlist(
+      id: docRef.id,
+      userId: userId,
+      title: title,
+      reason: '',
+    );
+
+    await docRef.set(wishlist.toMap());
+    print('Custom wishlist created: ${docRef.id}');
+    return docRef.id;
+  }
 }

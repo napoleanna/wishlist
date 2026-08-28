@@ -5,6 +5,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../firebase_data/firestore_service.dart';
 import '../../models/wish.dart';
 import 'widgets/wish_form.dart';
+import '../../widgets/create_wishlist_dialog.dart';
 
 class WishCreationScreen extends StatefulWidget {
   final String initialProductName;
@@ -89,44 +90,91 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
     }
   }
 
-  void _saveWish() async {
+  Future<void> _saveWish() async {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a product name')),
+        const SnackBar(
+          content: Text('Please enter a product name'),
+        ),
       );
       return;
     }
 
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
+
       if (currentUser == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('User not logged in')),
+          const SnackBar(
+            content: Text('User not logged in'),
+          ),
         );
         return;
       }
 
-      String listId;
+      final firestoreService = FirestoreService();
+
+      String? listId;
       String? reason;
 
-      if (widget.existingWish != null && widget.existingWish!.listId.isNotEmpty) {
+      if (widget.existingWish != null) {
         listId = widget.existingWish!.listId;
         reason = widget.existingWish!.reason;
-      } else if (widget.initialListId != null && widget.initialListId!.isNotEmpty) {
+      }
+
+      else if (widget.initialListId != null &&
+          widget.initialListId!.isNotEmpty) {
         listId = widget.initialListId!;
-        reason = widget.initialReason ?? _selectedReason;
-      } else {
-        reason = _selectedReason;
-        listId = reason != null
-            ? reason.toLowerCase().replaceAll(' ', '_').replaceAll('`', '')
-            : 'other';
+        reason = widget.initialReason;
+      }
+
+      else if (_selectedReason != null && _selectedReason!.isNotEmpty) {
+
+        final selectedReason = _selectedReason!;
+        reason = selectedReason;
+
+        listId = await firestoreService.getOrCreateWishlistByReason(
+          currentUser.uid,
+          selectedReason,
+        );
+      }
+
+      else {
+        final wishlistTitle = await showDialog<String>(
+          context: context,
+          builder: (context) {
+            return const CreateWishlistDialog();
+          },
+        );
+
+        if (wishlistTitle == null) {
+          return;
+        }
+
+        listId = await firestoreService.createCustomWishlist(
+          userId: currentUser.uid,
+          title: wishlistTitle,
+        );
+
+        reason = null;
+      }
+
+      if (listId == null || listId!.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Please select or create a wishlist first',
+            ),
+          ),
+        );
+        return;
       }
 
       final newWish = Wish(
         id: widget.existingWish?.id ?? '',
         userId: currentUser.uid,
         title: _nameController.text.trim(),
-        listId: listId,
+        listId: listId!,
         reason: reason,
         link: _productLinkController.text.trim(),
         notes: _notesController.text.trim(),
@@ -134,25 +182,31 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
         rememberDate: _rememberDate,
       );
 
-      final firestoreService = FirestoreService();
-
-
       if (widget.existingWish != null && widget.existingWish!.id.isNotEmpty) {
+
         await firestoreService.updateWish(
           currentUser.uid,
           widget.existingWish!.id,
           newWish,
         );
+
       } else {
         await firestoreService.saveWish(newWish);
       }
 
-      if (mounted) Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
 
     } catch (e) {
       if (!mounted) return;
+
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error saving wish: $e')),
+        SnackBar(
+          content: Text(
+            'Error saving wish: $e',
+          ),
+        ),
       );
     }
   }
