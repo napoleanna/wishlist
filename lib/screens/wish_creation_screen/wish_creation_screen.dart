@@ -159,7 +159,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
         reason = null;
       }
 
-      if (listId == null || listId!.isEmpty) {
+      if (listId == null || listId.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
@@ -174,7 +174,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
         id: widget.existingWish?.id ?? '',
         userId: currentUser.uid,
         title: _nameController.text.trim(),
-        listId: listId!,
+        listId: listId,
         reason: reason,
         link: _productLinkController.text.trim(),
         notes: _notesController.text.trim(),

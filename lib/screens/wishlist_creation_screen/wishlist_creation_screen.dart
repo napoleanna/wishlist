@@ -25,14 +25,20 @@ class _WishlistCreationScreenState extends State<WishlistCreationScreen> {
   bool _isSaving = false;
 
   void _updateSelectedImage(String title) {
-    if (GiftReasonHelper.reasonImages.containsKey(title)) {
-      setState(() {
-        _selectedImage = GiftReasonHelper.reasonImages[title];
-      });
-    } else {
-      _selectedImage = null;
+    final normalizedTitle = title.trim().toLowerCase();
+
+    String? image;
+
+    for (final entry in GiftReasonHelper.reasonImages.entries) {
+      if (entry.key.toLowerCase() == normalizedTitle) {
+        image = entry.value;
+        break;
+      }
     }
-    setState(() {});
+
+    setState(() {
+      _selectedImage = image;
+    });
   }
 
   Future<void> _saveWishlist() async {

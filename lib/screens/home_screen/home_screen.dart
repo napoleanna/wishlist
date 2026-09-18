@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
         index: screenIndex,
         children: screens,
       ),
+
       bottomNavigationBar: HomeBottomBar(
         selectedIndex: selectedIndex,
         onItemSelected: onItemTapped,
