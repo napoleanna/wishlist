@@ -114,29 +114,19 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
 
       final firestoreService = FirestoreService();
 
+
       String? listId;
-      String? reason;
+      String? reason = _selectedReason;
 
       if (widget.existingWish != null) {
         listId = widget.existingWish!.listId;
-        reason = widget.existingWish!.reason;
       }
+
+
 
       else if (widget.initialListId != null &&
           widget.initialListId!.isNotEmpty) {
         listId = widget.initialListId!;
-        reason = widget.initialReason;
-      }
-
-      else if (_selectedReason != null && _selectedReason!.isNotEmpty) {
-
-        final selectedReason = _selectedReason!;
-        reason = selectedReason;
-
-        listId = await firestoreService.getOrCreateWishlistByReason(
-          currentUser.uid,
-          selectedReason,
-        );
       }
 
       else {
@@ -147,28 +137,28 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
           },
         );
 
-        if (wishlistTitle == null) {
+        if (!mounted) return;
+
+        if (wishlistTitle == null ||
+            wishlistTitle.trim().isEmpty) {
           return;
         }
 
         listId = await firestoreService.createCustomWishlist(
           userId: currentUser.uid,
-          title: wishlistTitle,
+          title: wishlistTitle.trim(),
         );
-
-        reason = null;
       }
 
       if (listId == null || listId.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text(
-              'Please select or create a wishlist first',
-            ),
+            content: Text('Please select or create a wishlist first'),
           ),
         );
         return;
       }
+
 
       final newWish = Wish(
         id: widget.existingWish?.id ?? '',

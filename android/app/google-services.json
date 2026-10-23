@@ -12,7 +12,20 @@
           "package_name": "com.napoleann.wishlist"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "758793675164-s3tv7dvu55t6j18idhg038kj3rrqcki6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.napoleann.wishlist",
+            "certificate_hash": "f67c29adbfc4125541e9a6e1b77c650f45144cff"
+          }
+        },
+        {
+          "client_id": "758793675164-m8qupf7sicsk55cmgd8oa25615bk17ll.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCMLDyNBcpwC56qqvSMXi9l0XYFqMEwBl8"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "758793675164-m8qupf7sicsk55cmgd8oa25615bk17ll.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "758793675164-mqepg0lfh7ue1aai02hh5pnek1fq4slk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.napoleann.wishlist"
+              }
+            }
+          ]
         }
       }
     }

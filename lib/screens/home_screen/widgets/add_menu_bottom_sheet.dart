@@ -29,21 +29,19 @@ class AddMenuBottomSheet extends StatelessWidget {
       end: Alignment.bottomRight,
     );
 
-
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
-      ),
-     child:  Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildHandle(isDark),
-          const SizedBox(height: 30),
-
-          OptionCard(
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildHandle(isDark),
+            const SizedBox(height: 30),
+            OptionCard(
               gradient: pinkGradient,
               imagePath: 'assets/images/gift_box.png',
               title: 'Add a New Wish',
@@ -51,14 +49,15 @@ class AddMenuBottomSheet extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                        builder: (_) => WishCreationScreen(userId: userId)));
-                },
-              ),
-          const SizedBox(height: 20),
-          
-          OptionCard(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WishCreationScreen(userId: userId),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            OptionCard(
               gradient: purpleGradient,
               imagePath: 'assets/images/present.png',
               title: 'New Wishlist/Occasion',
@@ -66,15 +65,17 @@ class AddMenuBottomSheet extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => WishlistCreationScreen(userId: userId)));
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WishlistCreationScreen(userId: userId),
+                  ),
+                );
               },
-          ),
-          const SizedBox(height: 20),
-        ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
-     ),
     );
   }
 
@@ -88,5 +89,4 @@ class AddMenuBottomSheet extends StatelessWidget {
       ),
     );
   }
-
 }

@@ -8,7 +8,7 @@ class GiftReasonHelper {
     'Wedding',
     'Valentine`s Day',
     'Other Occasion',
-    'Just Because'
+    'No specific occasion'
   ];
 
   static final Map<String, String> reasonImages = const {
@@ -19,6 +19,6 @@ class GiftReasonHelper {
     'Wedding': 'assets/gift_reasons/wedding.webp',
     'Valentine`s Day': 'assets/gift_reasons/valentine_day.webp',
     'Other Occasion': 'assets/gift_reasons/other_occasion.webp',
-    'Just Because': 'assets/gift_reasons/just_because.webp',
+    'No specific occasion': 'assets/gift_reasons/just_because.webp',
   };
 }

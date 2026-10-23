@@ -25,18 +25,26 @@ class AppTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       inputFormatters: inputFormatters,
+      style: const TextStyle(color: Color(0xFF392D75), fontWeight: FontWeight.w500),
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, color: Colors.deepPurpleAccent),
+        labelStyle: const TextStyle(color: Color(0xFF9373A7)),
+        prefixIcon: Icon(icon, color: const Color(0xFF723EB7)),
         filled: true,
-        fillColor: Colors.purple.shade50,
+        fillColor: Colors.white.withValues(alpha: 0.9),
+        contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20, vertical: 18),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.deepPurple, width: 2),
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFF723EB7), width: 1.5),
         ),
       ),
     );

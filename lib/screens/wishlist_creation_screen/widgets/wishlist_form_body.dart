@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import '../../../data/gift_reasons.dart';
 
 class WishlistFormBody extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -54,7 +53,7 @@ class WishlistFormBody extends StatelessWidget {
               ],
             ),
               child: Image.asset(
-                'assets/images/gift_box_screensaver .png',
+                'assets/images/gift_box_screensaver.png',
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) => const Icon(
                   Icons.card_giftcard,
@@ -98,46 +97,39 @@ class WishlistFormBody extends StatelessWidget {
                  ),
                 ),
                 const SizedBox(height: 12),
-                Autocomplete<String>(
-                    optionsBuilder: (textValue) =>
-                    GiftReasonHelper.giftReasons.where((opt) =>
-                        opt.toLowerCase().contains(textValue.text.toLowerCase())),
-                  onSelected: onTitleChanged,
-                  fieldViewBuilder: (context, controller, focusNode, onSubmitted) {
-                      if (controller.text != titleController.text) {
-                        controller.text = titleController.text;
-                      }
-                      return TextFormField(
-                        controller: controller,
-                        focusNode: focusNode,
-                        style: TextStyle(color: isDarkMode ? Colors.white
-                            : Colors.black87),
-                        decoration: InputDecoration(
-                          hintText: 'Birthday, Wedding, etc.',
-                          hintStyle: TextStyle(
-                            color: secondaryTextColor.withValues(alpha: 0.6),
-                          ),
-                          filled: true,
-                          fillColor: isDarkMode ? Colors.white10
-                              : Colors.purple.shade50.withValues(alpha: 0.5),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 14, horizontal: 16),
-                        ),
-                        onChanged: (val) {
-                          titleController.text = val;
-                          onTitleChanged(val);
-                        },
-                        validator: (val) => (val == null || val.isEmpty)
-                            ? 'Please enter a name' : null,
-                      );
-                  },
+                TextFormField(
+                  controller: titleController,
+                  textCapitalization: TextCapitalization.sentences,
+                  style: TextStyle(
+                    color: isDarkMode ? Colors.white : Colors.black87,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'e.g. New Year 2026, My wishes',
+                    hintStyle: TextStyle(
+                      color: secondaryTextColor.withValues(alpha: 0.6),
+                    ),
+                    filled: true,
+                    fillColor: isDarkMode
+                        ? Colors.white10
+                        : Colors.purple.shade50.withValues(alpha: 0.5),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 14, horizontal: 16,
+                    ),
+                  ),
+                  onChanged: onTitleChanged,
+                  validator: (value) =>
+                      value == null || value.trim().isEmpty
+                      ? 'Please enter a name'
+                      : null,
                 ),
               ],
             ),
           ),
+
          const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(20),
