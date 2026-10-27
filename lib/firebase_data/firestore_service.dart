@@ -1,5 +1,8 @@
+import 'dart:developer' as developer;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:wishlist/models/wish_list.dart';
 import '../models/wish.dart';
 
@@ -29,9 +32,9 @@ class FirestoreService {
 
       await docRef.set(wishWithId.toMap());
 
-      print('Wish saved successfully: ${docRef.id}');
+      developer.log('Wish saved successfully: ${docRef.id}', name: 'FirestoreService');
     } catch (e) {
-      print('Error saving wish: $e');
+      developer.log('Error saving wish: $e', name: 'FirestoreService', error: e);
       rethrow;
     }
 
@@ -71,9 +74,11 @@ class FirestoreService {
           .collection('wishes')
           .doc(wishId)
           .delete();
-      print('Wish deleted: $wishId');
+      if (kDebugMode) print('Wish deleted: $wishId');
     } catch (e) {
-      print('Error deleting wish: $e');
+      if (kDebugMode) {
+        print('Error deleting wish: $e');
+      }
       rethrow;
     }
   }
@@ -90,9 +95,14 @@ class FirestoreService {
           .collection('wishes')
           .doc(wishId)
           .update(updatedWish.toMap());
-      print('Wish updated successfully: $wishId');
+      developer.log('Wish updated successfully: $wishId', name: 'FirestoreService');
+
     } catch (e) {
-      print('Error updating wish: $e');
+      developer.log(
+        'Error updating wish: $e',
+        name: 'FirestoreService',
+        error: e,
+      );
       rethrow;
     }
   }
@@ -111,11 +121,16 @@ class FirestoreService {
 
       await docRef.set(wishlistWithId.toMap());
 
-      print('Wishlist created successfully: ${docRef.id}');
+      developer.log('Wishlist created successfully: ${docRef.id}',
+          name: 'FirestoreService');
 
       return docRef.id;
     } catch (e) {
-      print('Error creating wishlist: $e');
+      developer.log(
+        'Error creating wishlist: $e',
+        name: 'FirestoreService',
+        error: e,
+      );
       rethrow;
     }
   }
@@ -144,9 +159,13 @@ class FirestoreService {
           .collection('wish_lists')
           .doc(wishlistId)
           .delete();
-      print('Wishlist deleted: $wishlistId');
+      developer.log('Wishlist deleted: $wishlistId', name: 'FirestoreService');
     } catch (e) {
-      print('Error deleting wishlist: $e');
+      developer.log(
+        'Error deleting wishlist: $e',
+        name: 'FirestoreService',
+        error: e,
+      );
       rethrow;
     }
   }
@@ -163,9 +182,14 @@ class FirestoreService {
                 .collection('wish_lists')
                 .doc(wishlistId)
                 .update(update.toMap());
-      print('Wishlist updated: $wishlistId');
+             developer.log('Wishlist updated: $wishlistId',
+                 name: 'FirestoreService');
     } catch (e) {
-      print('Error updating wishlist: $e');
+           developer.log(
+             'Error updating wishlist: $e',
+             name: 'FirestoreService',
+             error: e,
+           );
       rethrow;
     }
   }
@@ -223,7 +247,8 @@ class FirestoreService {
     );
 
     await docRef.set(wishlist.toMap());
-    print('Custom wishlist created: ${docRef.id}');
+    developer.log('Custom wishlist created: ${docRef.id}',
+        name: 'FirestoreService');
     return docRef.id;
   }
 }

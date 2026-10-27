@@ -92,6 +92,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
 
   Future<void> _saveWish() async {
     if (_nameController.text.trim().isEmpty) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter a product name'),
@@ -104,6 +105,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
       final currentUser = FirebaseAuth.instance.currentUser;
 
       if (currentUser == null) {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('User not logged in'),
@@ -114,22 +116,15 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
 
       final firestoreService = FirestoreService();
 
-
       String? listId;
       String? reason = _selectedReason;
 
       if (widget.existingWish != null) {
         listId = widget.existingWish!.listId;
-      }
-
-
-
-      else if (widget.initialListId != null &&
+      } else if (widget.initialListId != null &&
           widget.initialListId!.isNotEmpty) {
         listId = widget.initialListId!;
-      }
-
-      else {
+      } else {
         final wishlistTitle = await showDialog<String>(
           context: context,
           builder: (context) {
@@ -150,7 +145,9 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
         );
       }
 
-      if (listId == null || listId.isEmpty) {
+      if (!mounted) return;
+
+      if (listId.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Please select or create a wishlist first'),
@@ -158,7 +155,6 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
         );
         return;
       }
-
 
       final newWish = Wish(
         id: widget.existingWish?.id ?? '',
@@ -173,20 +169,17 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
       );
 
       if (widget.existingWish != null && widget.existingWish!.id.isNotEmpty) {
-
         await firestoreService.updateWish(
           currentUser.uid,
           widget.existingWish!.id,
           newWish,
         );
-
       } else {
         await firestoreService.saveWish(newWish);
       }
 
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      if (!mounted) return;
+      Navigator.pop(context);
 
     } catch (e) {
       if (!mounted) return;
@@ -222,7 +215,7 @@ class _WishCreationScreenState extends State<WishCreationScreen> {
                   dateMaskFormatter: _dateMaskFormatter,
                   isEditing: widget.existingWish != null,
                   onReasonChanged: (val) => setState(() => _selectedReason = val),
-                  onRememberDateChanged: (val) => setState(() => _rememberDate = val ?? false),
+                  onRememberDateChanged: (val) => setState(() => _rememberDate = val),
                   onPickDate: _pickDate,
                   onSave: _saveWish,
                 ),

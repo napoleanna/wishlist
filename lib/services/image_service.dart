@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -23,7 +25,11 @@ class ImageService {
       
       return downloadUrl;
     } catch (e) {
-      print('Download error: $e');
+      developer.log(
+        'Download error: $e',
+        name: 'StorageService',
+        error: e,
+      );
       return null;
     }
   }

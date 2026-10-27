@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_ui/material_ui.dart';
@@ -51,7 +53,11 @@ class _ProfileSearchDialogState extends State<ProfileSearchDialog> {
         Navigator.pop(context);
       }
      } catch (e) {
-      print("Error sending request: $e");
+      developer.log(
+          'Error sending request: $e',
+          name: 'FirestoreService', // или название другого сервиса, если это другой файл
+          error: e,
+      );
      }
     }
 
@@ -80,7 +86,11 @@ class _ProfileSearchDialogState extends State<ProfileSearchDialog> {
       });
     } catch (e) {
       setState(() => _isLoading = false);
-      print('Error searching user: $e');
+      developer.log(
+        'Error searching user: $e',
+        name: 'UserSearch',
+        error: e,
+      );
     }
   }
 
